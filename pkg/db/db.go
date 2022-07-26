@@ -9,14 +9,15 @@ import (
 )
 
 func Init() *gorm.DB {
-	dbURL := "postgres://pg:pass@localhost:5432/crud"
+	// Composition: POSTGRES_USER : POSTGRES_PASSWORD @localhost:5432  POSTGRES_DB
+	dbURL := "postgres://postgres:root@localhost:5432/crud"
 
 	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
-
 	if err != nil {
 		log.Fatalln(err)
 	}
 
+	//Create table Books
 	db.AutoMigrate(&models.Book{})
 
 	return db

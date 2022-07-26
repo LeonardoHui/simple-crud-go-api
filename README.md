@@ -4,3 +4,11 @@ The original project belongs to [karanpratapsingh](https://github.com/karanprata
 
 - [Build a REST API with Go - For Beginners (Part 1)](https://www.youtube.com/watch?v=bFYZrEuEDLE&t=0s&ab_channel=Karan)
 - [Build a REST API with Go - Connecting to PostgreSQL using GORM (Part 2)](https://www.youtube.com/watch?v=Yk5ZjKq4qDQ&ab_channel=Karan)
+
+To connect to your local postgres
+
+- create a DB named "crud"
+- set the user to "postgress"
+- set the password to "root"
+
+or change the line 12 on pkg > db > db.go to fit your postgres configuration

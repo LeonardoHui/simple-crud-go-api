@@ -5,8 +5,8 @@ services:
     container_name: database
     image: postgres:12.8
     restart: always
-    environment: -POSTGRES_USER=pg
-      -POSTGRES_PASSWORD=pass
+    environment: -POSTGRES_USER=postgres
+      -POSTGRES_PASSWORD=root
       -POSTGRES_DB=crud
     ports: -5432:5432
     volumer: -db:/var/lib/postgresql/data

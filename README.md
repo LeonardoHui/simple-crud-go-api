@@ -12,3 +12,6 @@ To connect to your local postgres
 - set the password to "root"
 
 or change the line 12 on pkg > db > db.go to fit your postgres configuration
+
+This one was used to unit testing
+https://codeburst.io/unit-testing-for-rest-apis-in-go-86c70dada52d

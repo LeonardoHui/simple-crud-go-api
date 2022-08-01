@@ -27,20 +27,6 @@ func (h handler) UpdateBook(w http.ResponseWriter, r *http.Request) {
 	var UpdateBook models.Book
 	json.Unmarshal(body, &UpdateBook)
 
-	// for index, book := range mocks.Books {
-	// 	if book.ID == id {
-	// 		book.Title = UpdateBook.Title
-	// 		book.Author = UpdateBook.Author
-	// 		book.Description = UpdateBook.Description
-
-	// 		mocks.Books[index] = book
-
-	// 		w.WriteHeader(http.StatusOK)
-	// 		w.Header().Add("Content-Type", "application/json")
-	// 		json.NewEncoder(w).Encode("Updated")
-	// 	}
-	// }
-
 	var book models.Book
 
 	if result := h.DB.First(&book, id); result.Error != nil {

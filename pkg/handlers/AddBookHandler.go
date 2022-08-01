@@ -22,8 +22,6 @@ func (h handler) AddBook(w http.ResponseWriter, r *http.Request) {
 	var book models.Book
 	json.Unmarshal(body, &book)
 
-	// book.ID = rand.Intn(100)
-	// mocks.Books = append(mocks.Books, book)
 	if result := h.DB.Create(&book); result.Error != nil {
 		fmt.Println(result.Error)
 	}

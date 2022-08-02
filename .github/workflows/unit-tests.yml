@@ -23,8 +23,8 @@ jobs:
 
       - name: Convert report
         run: |
-          go get github.com/axw/gocov/gocov
-          go get github.com/AlekSi/gocov-xml
+          go install github.com/axw/gocov/gocov@latest
+          go install github.com/AlekSi/gocov-xml@latest
           gocov convert cover.out | gocov-xml > coverage.xml
 
       - name: Codacy

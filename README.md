@@ -13,5 +13,12 @@ To connect to your local postgres
 
 or change the line 12 on pkg > db > db.go to fit your postgres configuration
 
-This one was used to unit testing
-https://codeburst.io/unit-testing-for-rest-apis-in-go-86c70dada52d
+These were used to write unit testing
+
+- https://codeburst.io/unit-testing-for-rest-apis-in-go-86c70dada52d
+- https://github.com/gorilla/mux#testing-handlers
+
+To run unit tests:
+
+go test -v ./pkg/... -coverprofile cover.out
+go tool cover -html="cover.out"

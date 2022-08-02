@@ -23,7 +23,7 @@ jobs:
 
       - name: Convert report
         run: |
-          go test -v ./pkg/... -coverprofile cover.out
+          go get code.google.com/p/go.tools/cmd/cover
           go get github.com/t-yuki/gocover-cobertura
           gocover-cobertura < cover.out > coverage.xml
 

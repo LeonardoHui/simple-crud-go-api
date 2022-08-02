@@ -23,12 +23,12 @@ jobs:
 
       - name: Convert report
         run: |
-          go install github.com/jandelgado/gcov2lcov@latest
-          gcov2lcov -infile=coverage.out -outfile=coverage.lcov
+          go install github.com/t-yuki/gocover-cobertura
+          gocover-cobertura < coverage.out > coverage.xml
 
       - name: Codacy
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
         run: |
           bash <(curl -Ls https://coverage.codacy.com/get.sh) report \
-            --force-coverage-parser go -r coverage.lcov
+            --force-coverage-parser go -r coverage.xml

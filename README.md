@@ -1,3 +1,6 @@
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9b4a7ac97b55453a8f3a05c9572e031a)](https://app.codacy.com/gh/LeonardoHui/simple-crud-go-api?utm_source=github.com&utm_medium=referral&utm_content=LeonardoHui/simple-crud-go-api&utm_campaign=Badge_Grade_Settings)
+
 This is a simple API created for learning purpose.
 
 The original project belongs to [karanpratapsingh](https://github.com/karanpratapsingh) whose videos were followed to develop the basis of this one, please check out his videos:

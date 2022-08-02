@@ -19,7 +19,7 @@ jobs:
           go-version: 1.18
 
       - name: Test
-        run: go test -v ./pkg/... -coverprofile coverage.out
+        run: go test -v ./pkg/... -coverprofile cover.out
 
       - name: Convert report
         run: |
@@ -32,4 +32,4 @@ jobs:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
         run: |
           bash <(curl -Ls https://coverage.codacy.com/get.sh) report \
-            --force-coverage-parser go -r coverage.lcov
+            --force-coverage-parser go -r coverage.xml

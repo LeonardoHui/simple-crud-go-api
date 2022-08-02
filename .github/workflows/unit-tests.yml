@@ -19,7 +19,7 @@ jobs:
           go-version: 1.18
 
       - name: Test
-        run: go test -v ./pkg/... -coverprofile cover.out
+        run: go test -v ./pkg/... -coverprofile coverage.out
 
       - name: Convert report
         run: |

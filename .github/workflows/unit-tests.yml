@@ -26,10 +26,10 @@ jobs:
           go install github.com/axw/gocov/gocov@latest
           go install github.com/AlekSi/gocov-xml@latest
           gocov convert cover.out | gocov-xml > coverage.xml
+          cat coverage.xml
 
       - name: Codacy
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
         run: |
-          bash <(curl -Ls https://coverage.codacy.com/get.sh) report \
-            --force-coverage-parser go -r coverage.xml
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) report --force-coverage-parser go -r coverage.xml

@@ -15,27 +15,25 @@ import (
 	"gorm.io/gorm"
 )
 
-func Test_GetBook_Returns_Successfully(t *testing.T) {
-
-	db, mock, err := sqlmock.New()
-	if err != nil {
-		t.Fatalf("error opening sqlmock: %s", err)
+func Test_DeleteBook_Returns_Successfully(t *testing.T) {
+	type args struct {
+		Name    string
+		Ordinal int
+		Value   int
 	}
+	db, mock, _ := sqlmock.New()
 	defer db.Close()
 
 	dialector := postgres.New(postgres.Config{
-		DSN:                  "sqlmock_db",
+		DSN:                  "sqlmock_db_0",
 		DriverName:           "postgres",
 		Conn:                 db,
 		PreferSimpleProtocol: true,
 	})
 
-	gormDb, err := gorm.Open(dialector, &gorm.Config{})
-	if err != nil {
-		t.Fatalf("error opening gorm: %s", err)
-	}
+	gromDb, _ := gorm.Open(dialector, &gorm.Config{})
 
-	h := handler{DB: gormDb}
+	h := handler{DB: gromDb}
 
 	book := models.Book{ID: 256, Title: "Game of Phones", Author: "Unknown", Description: "Unknown"}
 	row := sqlmock.
@@ -43,25 +41,32 @@ func Test_GetBook_Returns_Successfully(t *testing.T) {
 		AddRow(book.ID, book.Title, book.Author, book.Description)
 
 	mock.
-		ExpectQuery(regexp.QuoteMeta(`SELECT * FROM "books" WHERE "books"."id" = $1 ORDER BY "books"."id" LIMIT 1`)).
-		WithArgs(book.ID).
+		ExpectQuery(regexp.QuoteMeta(`SELECT * FROM "books" WHERE "books"."id" = $1 ORDER BY "books"."id"`)).
+		WithArgs(256).
 		WillReturnRows(row)
 
-	req := httptest.NewRequest("GET", "/books/256", nil)
-	rr := httptest.NewRecorder()
+	mock.ExpectBegin()
+
+	mock.
+		ExpectExec(regexp.QuoteMeta(`DELETE FROM "books" WHERE "books"."id" = $1`)).
+		WithArgs(256)
+
+	req := httptest.NewRequest("DELETE", "/books/256", nil)
+	respRec := httptest.NewRecorder()
 
 	//This test we must use the gorilla-mux due the variable in our route
 	router := mux.NewRouter()
-	router.HandleFunc("/books/{id}", h.GetBook)
-	router.ServeHTTP(rr, req)
+	router.HandleFunc("/books/{id}", h.DeleteBook)
+	router.ServeHTTP(respRec, req)
 
-	assert.Equal(t, http.StatusOK, rr.Code)
+	assert.Equal(t, http.StatusOK, respRec.Code)
 
-	body, err := ioutil.ReadAll(rr.Body)
-	expectedBody := `{"id":256,"title":"Game of Phones","author":"Unknown","description":"Unknown"}`
-	assert.Equal(t, expectedBody, string(body[:len(body)-1])) //Removing new line
+	respBody, _ := ioutil.ReadAll(respRec.Body)
+	expectedBody := `"Deleted"`
+	assert.Equal(t, expectedBody, string(respBody[:len(respBody)-1]))
 
 	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Log(err)
 		t.Fail()
 	}
 }

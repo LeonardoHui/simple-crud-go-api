@@ -16,7 +16,7 @@ func (h handler) AddBook(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 
 	if err != nil {
-		log.Fatalln(err)
+		log.Panicln(err)
 	}
 
 	var book models.Book

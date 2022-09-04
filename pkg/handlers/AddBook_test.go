@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"bytes"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -55,4 +56,33 @@ func Test_AddBook_Returns_Successfully(t *testing.T) {
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Fail()
 	}
+}
+
+type errReader int
+
+func (errReader) Read(p []byte) (n int, err error) {
+	return 0, errors.New("test error")
+}
+
+func Test_AddBook_Returns_Fail_to_Ready_Body(t *testing.T) {
+
+	db, _, _ := sqlmock.New()
+	defer db.Close()
+
+	dialector := postgres.New(postgres.Config{
+		DSN:                  "sqlmock_db_0",
+		DriverName:           "postgres",
+		Conn:                 db,
+		PreferSimpleProtocol: true,
+	})
+
+	gromDb, _ := gorm.Open(dialector, &gorm.Config{})
+
+	h := handler{DB: gromDb}
+
+	req := httptest.NewRequest("POST", "/book", errReader(0))
+	respRec := httptest.NewRecorder()
+	httpHandler := http.HandlerFunc(h.AddBook)
+
+	assert.PanicsWithValue(t, "test error\n", func() { httpHandler.ServeHTTP(respRec, req) })
 }
